@@ -25,7 +25,6 @@ func Decrypt(enc []byte, key string, iv string) string {
 		fmt.Println(aes.BlockSize)
 		panic("ciphertext is not a multiple of the block size")
 	}
-	fmt.Println(len(ciphertext))
 	mode := cipher.NewCBCDecrypter(block, []byte(iv))
 	mode.CryptBlocks(ciphertext, ciphertext)
 	return string(ciphertext[:size-1])

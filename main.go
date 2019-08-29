@@ -1,13 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/gocolly/colly"
+	"github.com/grafov/m3u8"
+	"github.com/prateek2211/musiload-go/services"
 	"github.com/prateek2211/musiload-go/utils"
 	"golang.org/x/text/transform"
 	"golang.org/x/text/unicode/norm"
-	"io/ioutil"
 	"log"
 )
 
@@ -35,11 +37,16 @@ func main() {
 
 	c.OnResponse(func(response *colly.Response) {
 		if (response.Headers.Get("content-type") == "application/vnd.apple.mpegurl") {
-			fmt.Println("Hello")
-			err := ioutil.WriteFile(songTitle+".m3u8", response.Body, 0644)
-			if err != nil {
-				log.Fatal(err.Error())
-			}
+			fmt.Println("Downloading ...")
+			playist, _, _ := m3u8.DecodeFrom(bytes.NewReader(response.Body), true)
+			mp := playist.(*m3u8.MasterPlaylist)
+			ts := make(chan string, 1024)
+			go services.ParsePlaylist(mp.Variants[0].URI, ts)
+			services.DownloadTS(ts, songTitle+".mp3")
+			//err := ioutil.WriteFile(songTitle+".m3u8", response.Body, 0644)
+			//if err != nil {
+			//	log.Fatal(err.Error())
+			//}
 		}
 	})
 
