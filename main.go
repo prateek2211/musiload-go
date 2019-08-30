@@ -54,6 +54,7 @@ func main() {
 		fmt.Println("Visiting", r.URL.String())
 	})
 
+	fmt.Println("Enter the website url:")
 	var url string
 	_, err := fmt.Scanln(&url)
 	if err != nil {
