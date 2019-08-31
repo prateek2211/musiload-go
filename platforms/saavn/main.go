@@ -1,4 +1,4 @@
-package main
+package saavn
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-func main() {
+func ParseAndDownload(songUrl string) {
 	var songTitle string
 	c := colly.NewCollector()
 	c.UserAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
@@ -48,13 +48,7 @@ func main() {
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
 	})
-	fmt.Println("Enter the website url:")
-	var url string
-	_, err := fmt.Scanln(&url)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	err = c.Visit(url)
+	err := c.Visit(songUrl)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
