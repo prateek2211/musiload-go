@@ -4,7 +4,7 @@ CMD based program to download music from given url
 
 ---
 
-**Note : Currently it only supports urls from gaana.com**
+**Note : Currently it only supports urls from gaana.com and saavn.com**
 
 ## Usage
 
