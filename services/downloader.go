@@ -18,7 +18,8 @@ func ParsePlaylist(mediaPlaylistUrl string, ts chan string) {
 	for {
 		response, err := http.Get(mediaPlaylistUrl)
 		if err != nil {
-			log.Fatal(err.Error())
+			log.Println(err.Error())
+			time.Sleep(time.Duration(3) * time.Second)
 		}
 		playlist, listtype, err := m3u8.DecodeFrom(response.Body, true)
 		if err != nil {
