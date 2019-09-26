@@ -42,7 +42,7 @@ func ParseAndDownload(songUrl string) {
 			if err != nil {
 				log.Fatal(err.Error())
 			}
-			downloadAudio(response["auth_url"].(string), songTitle+".mp3")
+			DownloadAudio(response["auth_url"].(string), songTitle+".mp3")
 		}
 	})
 	c.OnRequest(func(r *colly.Request) {
@@ -70,7 +70,7 @@ func printDownloadedSize(u uint64) {
 	fmt.Printf("\rDownloading... %s complete", size)
 }
 
-func downloadAudio(url string, fileName string) {
+func DownloadAudio(url string, fileName string) {
 	response, err := http.Get(url)
 	file, err := os.Create(fileName)
 	if err != nil {
