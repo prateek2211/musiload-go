@@ -9,6 +9,7 @@ require (
 	github.com/antchfx/xpath v1.0.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gocolly/colly v1.2.0
+	github.com/golang/groupcache v0.0.0-20190702054246-869f871628b6
 	github.com/grafov/m3u8 v0.11.1
 	github.com/inhies/go-bytesize v0.0.0-20151001220322-5990f52c6ad6
 	github.com/kennygrant/sanitize v1.2.4 // indirect
