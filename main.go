@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/prateek2211/musiload-go/platforms/gaana"
+	"github.com/prateek2211/musiload-go/platforms/hungama"
 	"github.com/prateek2211/musiload-go/platforms/saavn"
 	"log"
 	"net/url"
@@ -21,5 +22,8 @@ func main() {
 	}
 	if u.Hostname() == "www.jiosaavn.com" {
 		saavn.ParseAndDownload(urlIp)
+	}
+	if u.Hostname() == "www.hungama.com" {
+		hungama.ParseAndDownload(urlIp)
 	}
 }

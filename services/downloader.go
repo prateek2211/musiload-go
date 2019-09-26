@@ -6,17 +6,30 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"os"
 	"strings"
 	"time"
 )
 
+var client http.Client
+var user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0"
+
+func init() {
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	client = http.Client{Jar: jar}
+}
 func ParsePlaylist(mediaPlaylistUrl string, ts chan string) {
 	cache := lru.New(1024)
 	ipUrl, _ := url.Parse(mediaPlaylistUrl)
 	for {
-		response, err := http.Get(mediaPlaylistUrl)
+		r, _ := http.NewRequest(http.MethodGet, mediaPlaylistUrl, nil)
+		r.Header.Set("User-Agent", user_agent)
+		response, err := client.Do(r)
 		if err != nil {
 			log.Println(err.Error())
 			time.Sleep(time.Duration(3) * time.Second)
@@ -59,7 +72,9 @@ func ParsePlaylist(mediaPlaylistUrl string, ts chan string) {
 func DownloadTS(ts chan string, fileName string) {
 	file, _ := os.Create(fileName)
 	for stream := range (ts) {
-		resp, err := http.Get(stream)
+		r, _ := http.NewRequest(http.MethodGet, stream, nil)
+		r.Header.Set("User-Agent", user_agent)
+		resp, err := client.Do(r)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
