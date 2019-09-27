@@ -75,7 +75,7 @@ func ParseAndDownload(link string) {
 	if isAlbum {
 		err = c.Visit(fmt.Sprintf("https://www.hungama.com/audio-player-data/%s/%s?_country=IN", "album", uid))
 	} else {
-		err = c.Visit(fmt.Sprintf("https://www.hungama.com/audio-player-data/%s/%s?_country=IN", "song", uid))
+		err = c.Visit(fmt.Sprintf("https://www.hungama.com/audio-player-data/%s/%s?_country=IN", "track", uid))
 	}
 	u := url.URL{}
 	u.Host = "https://ping.hungama.com/t.js"

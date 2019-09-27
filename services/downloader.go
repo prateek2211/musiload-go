@@ -70,7 +70,7 @@ func ParsePlaylist(mediaPlaylistUrl string, ts chan string) {
 	}
 }
 func DownloadTS(ts chan string, fileName string) {
-	file, _ := os.Create(fileName)
+	file, _ := os.Create(os.Getenv("HOME") + "/Music/" + fileName)
 	for stream := range (ts) {
 		r, _ := http.NewRequest(http.MethodGet, stream, nil)
 		r.Header.Set("User-Agent", user_agent)

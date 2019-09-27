@@ -26,7 +26,7 @@ func ParseAndDownload(songUrl string) {
 		songUrl := songInfo["url"].(string)
 		songTitle = songInfo["title"].(string)
 		//Sets the cookie
-		err = c.Visit("https://www.jiosaavn.com/stats.php?ev=site:browser:fp&fp=a49a8a770fe85d2031bbf09d23be7e86")
+		err = c.Visit("https://www.jiosaavn.com/stats.php?ev=site:browser:fp&fp=c571f333e1c149bd1bbe0e527473d6b4")
 		if err != nil {
 			log.Fatal(err.Error())
 		}
@@ -42,7 +42,7 @@ func ParseAndDownload(songUrl string) {
 			if err != nil {
 				log.Fatal(err.Error())
 			}
-			DownloadAudio(response["auth_url"].(string), songTitle+".mp3")
+			DownloadAudio(response["auth_url"].(string), os.Getenv("HOME")+"/Music/"+songTitle+".mp3")
 		}
 	})
 	c.OnRequest(func(r *colly.Request) {
