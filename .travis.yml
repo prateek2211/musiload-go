@@ -1,0 +1,20 @@
+language: go
+addons:
+  apt:
+    packages:
+    # needed for the nfpm pipe:
+    - rpm
+    # needed for the snap pipe:
+    - snapd
+go:
+  - 1.12.5
+os:
+  - linux
+dist: bionic
+sudo: true
+env:
+- PATH=/snap/bin:$PATH GO111MODULE=on
+install:
+  - sudo snap install snapcraft --classic
+script:
+  - go build
