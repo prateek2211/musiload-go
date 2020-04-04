@@ -7,3 +7,4 @@ repl.py
 *.m3u8
 *.mp3
 bin/
+.idea/
