@@ -4,14 +4,20 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/url"
+
 	"github.com/gocolly/colly"
 	"github.com/grafov/m3u8"
 	"github.com/prateek2211/musiload-go/services"
 	"github.com/prateek2211/musiload-go/utils"
-	"log"
 )
 
-func ParseAndDownload(songUrl string) {
+type GaanaDownloader struct {
+	Url url.URL
+}
+
+func (g GaanaDownloader) Download() error {
 	var songTitle string
 	c := colly.NewCollector()
 
@@ -34,17 +40,13 @@ func ParseAndDownload(songUrl string) {
 	})
 
 	c.OnResponse(func(response *colly.Response) {
-		if (response.Headers.Get("content-type") == "application/vnd.apple.mpegurl") {
+		if response.Headers.Get("content-type") == "application/vnd.apple.mpegurl" {
 			fmt.Println("Downloading ...")
 			playist, _, _ := m3u8.DecodeFrom(bytes.NewReader(response.Body), true)
 			mp := playist.(*m3u8.MasterPlaylist)
 			ts := make(chan string, 1024)
 			go services.ParsePlaylist(mp.Variants[0].URI, ts)
 			services.DownloadTS(ts, songTitle+".mp3")
-			//err := ioutil.WriteFile(songTitle+".m3u8", response.Body, 0644)
-			//if err != nil {
-			//	log.Fatal(err.Error())
-			//}
 		}
 	})
 
@@ -52,8 +54,9 @@ func ParseAndDownload(songUrl string) {
 		fmt.Println("Visiting", r.URL.String())
 	})
 
-	err := c.Visit(songUrl)
+	err := c.Visit(g.Url.String())
 	if err != nil {
-		log.Fatal(err.Error())
+		return err
 	}
+	return nil
 }

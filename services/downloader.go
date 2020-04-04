@@ -1,8 +1,6 @@
 package services
 
 import (
-	"github.com/golang/groupcache/lru"
-	"github.com/grafov/m3u8"
 	"io"
 	"log"
 	"net/http"
@@ -11,6 +9,9 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/golang/groupcache/lru"
+	"github.com/grafov/m3u8"
 )
 
 var client http.Client
@@ -40,10 +41,10 @@ func ParsePlaylist(mediaPlaylistUrl string, ts chan string) {
 		}
 		if listtype == m3u8.MEDIA {
 			mp := playlist.(*m3u8.MediaPlaylist)
-			for _, segment := range (mp.Segments) {
+			for _, segment := range mp.Segments {
 				var tsURI string
 				if segment == nil {
-					break;
+					break
 				}
 				if strings.HasPrefix(segment.URI, "http") {
 					tsURI = segment.URI
@@ -71,7 +72,7 @@ func ParsePlaylist(mediaPlaylistUrl string, ts chan string) {
 }
 func DownloadTS(ts chan string, fileName string) {
 	file, _ := os.Create(os.Getenv("HOME") + "/Music/" + fileName)
-	for stream := range (ts) {
+	for stream := range ts {
 		r, _ := http.NewRequest(http.MethodGet, stream, nil)
 		r.Header.Set("User-Agent", user_agent)
 		resp, err := client.Do(r)

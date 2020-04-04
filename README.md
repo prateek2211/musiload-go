@@ -1,26 +1,38 @@
-# Musiload
+# Musiload [![Build Status](https://travis-ci.com/prateek2211/musiload-go.svg?branch=master)](https://travis-ci.com/prateek2211/musiload-go)
 
-CMD based program to download music from given url
+Musiload downloads songs/playlists from famous websites like [gaana](gaana.com), [hungama](www.hungama.com), [saavn](www.jiosaavn.com)
 
----
+Just enter the url of song/playlist and musiload does the job for you. 
 
-**Note : Currently it only supports urls from gaana.com and saavn.com**
 
 ## Usage
 
-To build the program:
+* ###Install directly from release:
+    * Grab the binary suitable for your OS [here](https://github.com/prateek2211/musiload-go/releases)
+
+    * Make the binary executable
+```shell script
+$ chmod +x musiload
+```
+* ###Build from source:
+
+<b> Prerequisite </b>
+
+* Golang (1.11 or later). You can see the instructions [here](https://golang.org/dl/) to download
 
 ```bash
-$ go build
+$ git clone https://github.com/prateek2211/musiload-go.git
+$ mkdir bin
+$ go build -o bin ./...
 ```
 
 Run program and enter the website url of the song
 
 ```bash
-$ ./musiload-go
+$ .bin/musiload <URL>
 ```
 
-The song will be downloaded in same directory
+The song will be downloaded in the Music directory
 
 
 ## Todo

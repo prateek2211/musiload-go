@@ -3,16 +3,22 @@ package saavn
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gocolly/colly"
-	"github.com/inhies/go-bytesize"
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
+
+	"github.com/gocolly/colly"
+	"github.com/inhies/go-bytesize"
 )
 
-func ParseAndDownload(songUrl string) {
+type SaavnDownloader struct {
+	Url url.URL
+}
+
+func (s SaavnDownloader) Download() error {
 	var songTitle string
 	c := colly.NewCollector()
 	c.UserAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
@@ -48,17 +54,18 @@ func ParseAndDownload(songUrl string) {
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
 	})
-	err := c.Visit(songUrl)
+	err := c.Visit(s.Url.String())
 	if err != nil {
-		log.Fatal(err.Error())
+		return err
 	}
+	return nil
 }
 
-type Sizecounter struct {
+type SizeCounter struct {
 	size uint64
 }
 
-func (c *Sizecounter) Write(d []byte) (int, error) {
+func (c *SizeCounter) Write(d []byte) (int, error) {
 	c.size += uint64(len(d))
 	printDownloadedSize(c.size)
 	return len(d), nil
@@ -76,7 +83,7 @@ func DownloadAudio(url string, fileName string) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	_, err = io.Copy(file, io.TeeReader(response.Body, &Sizecounter{}))
+	_, err = io.Copy(file, io.TeeReader(response.Body, &SizeCounter{}))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
