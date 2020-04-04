@@ -7,14 +7,14 @@ Just enter the url of song/playlist and musiload does the job for you.
 
 ## Usage
 
-* ###Install directly from release:
+* ### Install directly from release:
     * Grab the binary suitable for your OS [here](https://github.com/prateek2211/musiload-go/releases)
 
     * Make the binary executable
 ```shell script
 $ chmod +x musiload
 ```
-* ###Build from source:
+* ### Build from source:
 
 <b> Prerequisite </b>
 
