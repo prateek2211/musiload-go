@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/url"
+	"strings"
+
 	"github.com/gocolly/colly"
 	"github.com/grafov/m3u8"
 	"github.com/prateek2211/musiload-go/platforms/saavn"
 	"github.com/prateek2211/musiload-go/services"
-	"log"
-	"net/url"
-	"strings"
 )
 
 type song struct {
@@ -19,7 +20,12 @@ type song struct {
 	songTitle string
 }
 
-func ParseAndDownload(link string) {
+type HungamaDownloader struct {
+	Url url.URL
+}
+
+func (h HungamaDownloader) Download() error {
+	link := h.Url.String()
 	splits := strings.Split(link, "/")
 	uid := splits[len(splits)-2]
 	pu, _ := url.Parse(link)
@@ -87,4 +93,5 @@ func ParseAndDownload(link string) {
 		err = c.Visit(songs[index].mediaUrl)
 		index++
 	}
+	return nil
 }
